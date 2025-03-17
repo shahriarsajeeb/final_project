@@ -1,0 +1,3 @@
+type Something = {
+  name: string;
+};

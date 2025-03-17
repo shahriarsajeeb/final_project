@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bg-hero-gradiant,
+.bg-form-gradiant {
+  background-image: url("https://res.cloudinary.com/dkg6jv4l0/image/upload/v1741463740/oyc7wnuosrnwjwhrark3.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.bg-hero-gradiant::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
+}
+
+.bg-form-gradiant::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
+}
+.gradient-input {
+  background: linear-gradient(
+    144.39deg,
+    rgba(255, 255, 255, 0.4) -278.56%,
+    rgba(109, 109, 109, 0.4) -78.47%,
+    rgba(17, 16, 29, 0.4) 122.61%
+  );
+  border-radius: 8px;
+  padding: 16px;
+  color: white;
+  outline: none;
+}
+.gradient-input::placeholder {
+  color: white;
+}
