@@ -2,6 +2,7 @@ import prisma from "@/utils/prisma";
 import { compare } from "bcryptjs";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -38,11 +39,38 @@ export const authOptions: NextAuthOptions = {
         return { id: user.id, name: user.userName, email: user.email };
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
+      if (account?.provider === "google" || "facebook") {
+        const email = token?.email ?? profile?.email;
+
+        const existingUser = await prisma.users.findUnique({
+          where: {
+            email,
+          },
+        });
+
+        if (!existingUser && profile?.email) {
+          const newUser = await prisma.users.create({
+            data: {
+              email: profile?.email,
+              userName: profile?.name || profile?.email?.split("@")[0],
+            },
+          });
+
+          token.id = newUser.id;
+        } else {
+          token.id = existingUser?.id;
+        }
+      }
+      
       if (user) {
-        token.id = user.id;
+        token.id = user.id ?? profile?.sub;
       }
       return token;
     },

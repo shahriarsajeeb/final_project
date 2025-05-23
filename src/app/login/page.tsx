@@ -79,7 +79,9 @@ const Page = () => {
                 </p>
 
                 <div className="my-8 flex gap-4 items-center">
-                  <GoogleIcon />
+                  <div onClick={() => signIn("google")}>
+                    <GoogleIcon />
+                  </div>
                   <FaceBookIcon />
                 </div>
 
